@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Sistema de Alocação de Salas de Aula">
+        <meta name="author" content="Rodson Matos">
+    
+        <title>SAS</title>
+        
+        {LIBRARIES}
+        {HEAD}
+            
+        <link rel="stylesheet" href="app/templates/{template}/css/AdminLTE.min.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+             folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="app/templates/{template}/css/skins/_all-skins.min.css">
+        
+        <style>
+        .panel-heading
+        {
+            height: 57px !important;
+            background: #3c8dbc !important;
+            color: white !important;
+            display:block;
+            margin:auto;
+            text-align:center;
+            float:inherit !important;
+        }
+        
+        .panel-heading .panel-title
+        {
+            text-align:center;
+            float:inherit !important;
+            font-size: 20px;
+        }
+        .fb-inline-field-container
+        {
+            padding-right: 0 !important;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="adianti_div_content"></div>
+            <div id="adianti_online_content"></div>
+            <div id="adianti_online_content2"></div>
+            
+        </div>
+        <div style="text-align:center">
+            <!--[CREATE-ACCOUNT]--> <a href="index.php?class=SystemRegistrationForm">[_t{Create account}]</a> <!--[/CREATE-ACCOUNT]-->
+            <!--[RESET-PASSWORD]--> <a href="index.php?class=SystemRequestPasswordResetForm">[_t{Reset password}]</a> <br><!--[/RESET-PASSWORD]-->
+            
+        </div>
+        <!-- /#wrapper -->
+    </body>
+</html>
