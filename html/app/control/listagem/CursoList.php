@@ -6,6 +6,7 @@ class CursoList extends TPage
     private $datagrid; // listing
     private $pageNavigation;
     private $loaded;
+    private $filter_criteria;
     private static $database = 'sas';
     private static $activeRecord = 'Curso';
     private static $primaryKey = 'curso_id';
@@ -22,8 +23,7 @@ class CursoList extends TPage
         $this->form = new BootstrapFormBuilder(self::$formName);
 
         // define the form title
-        $this->form->setFormTitle('Listagem de Cursos');
-
+        $this->form->setFormTitle("Listagem de Cursos");
 
         $curso_id = new TEntry('curso_id');
         $nome_curso = new TEntry('nome_curso');
@@ -37,34 +37,35 @@ class CursoList extends TPage
         $modalidade->setSize('70%');
         $turno_curso->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$curso_id]);
-        $row2 = $this->form->addFields([new TLabel('Nome do curso:', null, '14px', null)],[$nome_curso]);
-        $row3 = $this->form->addFields([new TLabel('Tipo do curso:', null, '14px', null)],[$tipo_curso]);
-        $row4 = $this->form->addFields([new TLabel('Modalidade:', null, '14px', null)],[$modalidade]);
-        $row5 = $this->form->addFields([new TLabel('Turno do curso:', null, '14px', null)],[$turno_curso]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$curso_id]);
+        $row2 = $this->form->addFields([new TLabel("Nome do curso:", null, '14px', null)],[$nome_curso]);
+        $row3 = $this->form->addFields([new TLabel("Tipo do curso:", null, '14px', null)],[$tipo_curso]);
+        $row4 = $this->form->addFields([new TLabel("Modalidade:", null, '14px', null)],[$modalidade]);
+        $row5 = $this->form->addFields([new TLabel("Turno do curso:", null, '14px', null)],[$turno_curso]);
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
-        $btn_onsearch = $this->form->addAction('Buscar', new TAction([$this, 'onSearch']), 'fa:search #ffffff');
+        $btn_onsearch = $this->form->addAction("Buscar", new TAction([$this, 'onSearch']), 'fa:search #ffffff');
         $btn_onsearch->addStyleClass('btn-primary'); 
 
-        $btn_onexportcsv = $this->form->addAction('Exportar como CSV', new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
+        $btn_onexportcsv = $this->form->addAction("Exportar como CSV", new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
 
-        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['CursoForm', 'onShow']), 'fa:plus #69aa46');
+        $btn_onshow = $this->form->addAction("Cadastrar", new TAction(['CursoForm', 'onShow']), 'fa:plus #69aa46');
 
         // creates a Datagrid
         $this->datagrid = new TDataGrid;
         $this->datagrid = new BootstrapDatagridWrapper($this->datagrid);
+        $this->filter_criteria = new TCriteria;
 
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
-        $column_curso_id = new TDataGridColumn('curso_id', 'Curso id', 'center' , '70px');
-        $column_nome_curso = new TDataGridColumn('nome_curso', 'Nome do curso', 'left');
-        $column_tipo_curso = new TDataGridColumn('tipo_curso', 'Tipo do curso', 'left');
-        $column_modalidade = new TDataGridColumn('modalidade', 'Modalidade', 'left');
-        $column_turno_curso = new TDataGridColumn('turno_curso', 'Turno do curso', 'left');
+        $column_curso_id = new TDataGridColumn('curso_id', "Curso id", 'center' , '70px');
+        $column_nome_curso = new TDataGridColumn('nome_curso', "Nome do curso", 'left');
+        $column_tipo_curso = new TDataGridColumn('tipo_curso', "Tipo do curso", 'left');
+        $column_modalidade = new TDataGridColumn('modalidade', "Modalidade", 'left');
+        $column_turno_curso = new TDataGridColumn('turno_curso', "Turno do curso", 'left');
 
         $order_curso_id = new TAction(array($this, 'onReload'));
         $order_curso_id->setParameter('order', 'curso_id');
@@ -79,7 +80,7 @@ class CursoList extends TPage
         $action_onEdit = new TDataGridAction(array('CursoForm', 'onEdit'));
         $action_onEdit->setUseButton(false);
         $action_onEdit->setButtonClass('btn btn-default btn-sm');
-        $action_onEdit->setLabel('Editar');
+        $action_onEdit->setLabel("Editar");
         $action_onEdit->setImage('fa:pencil-square-o #478fca');
         $action_onEdit->setField(self::$primaryKey);
 
@@ -88,7 +89,7 @@ class CursoList extends TPage
         $action_onDelete = new TDataGridAction(array('CursoList', 'onDelete'));
         $action_onDelete->setUseButton(false);
         $action_onDelete->setButtonClass('btn btn-default btn-sm');
-        $action_onDelete->setLabel('Excluir');
+        $action_onDelete->setLabel("Excluir");
         $action_onDelete->setImage('fa:trash-o #dd5a43');
         $action_onDelete->setField(self::$primaryKey);
 
@@ -111,7 +112,7 @@ class CursoList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Listagem','Cursos']));
+        $container->add(TBreadCrumb::create(["Listagem","Cursos"]));
         $container->add($this->form);
         $container->add($panel);
 
@@ -292,8 +293,8 @@ class CursoList extends TPage
             // creates a repository for Curso
             $repository = new TRepository(self::$activeRecord);
             $limit = 20;
-            // creates a criteria
-            $criteria = new TCriteria;
+
+            $criteria = $this->filter_criteria;
 
             if (empty($param['order']))
             {

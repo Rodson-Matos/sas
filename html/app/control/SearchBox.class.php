@@ -40,7 +40,7 @@ class SearchBox extends TPage
         try
         {
             TTransaction::open('permission');
-            $user = SystemUser::newFromLogin( TSession::getValue('login') );
+            $user = SystemUsers::newFromLogin( TSession::getValue('login') );
             $programs = $user->getProgramsList();
             
             $menu = new TMenuParser('menu.xml');

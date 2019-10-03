@@ -20,7 +20,7 @@ class TurmaForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Cadastro de turma');
+        $this->form->setFormTitle("Cadastro de turma");
 
 
         $turma_id = new TEntry('turma_id');
@@ -28,9 +28,9 @@ class TurmaForm extends TPage
         $tipo_turma = new TCombo('tipo_turma');
         $curso_id = new TDBUniqueSearch('curso_id', 'sas', 'Curso', 'curso_id', 'curso_id','curso_id asc'  );
 
-        $n_alunos->addValidation('Número de alunos', new TRequiredValidator()); 
-        $tipo_turma->addValidation('Tipo da turma', new TRequiredValidator()); 
-        $curso_id->addValidation('Curso id', new TRequiredValidator()); 
+        $n_alunos->addValidation("Número de alunos", new TRequiredValidator()); 
+        $tipo_turma->addValidation("Tipo da turma", new TRequiredValidator()); 
+        $curso_id->addValidation("Curso id", new TRequiredValidator()); 
 
         $turma_id->setEditable(false);
         $tipo_turma->addItems(['MED1'=>'1º ANO','MED2'=>'2º ANO','MED3'=>'3º ANO','MOD1'=>'1º MÓDULO','MOD2'=>'2º MÓDULO','MOD3'=>'3º MÓDULO','MOD4'=>'4º MÓDULO']);
@@ -42,16 +42,16 @@ class TurmaForm extends TPage
         $curso_id->setSize('70%');
         $tipo_turma->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$turma_id]);
-        $row2 = $this->form->addFields([new TLabel('Número de alunos:', '#ff0000', '14px', null)],[$n_alunos]);
-        $row3 = $this->form->addFields([new TLabel('Tipo da turma:', '#ff0000', '14px', null)],[$tipo_turma]);
-        $row4 = $this->form->addFields([new TLabel('Curso:', '#ff0000', '14px', null)],[$curso_id]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$turma_id]);
+        $row2 = $this->form->addFields([new TLabel("Número de alunos:", '#ff0000', '14px', null)],[$n_alunos]);
+        $row3 = $this->form->addFields([new TLabel("Tipo da turma:", '#ff0000', '14px', null)],[$tipo_turma]);
+        $row4 = $this->form->addFields([new TLabel("Curso:", '#ff0000', '14px', null)],[$curso_id]);
 
         // create the form actions
-        $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
+        $btn_onsave = $this->form->addAction("Salvar", new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
 
-        $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $btn_onclear = $this->form->addAction("Limpar formulário", new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
 
         // vertical box container
         $container = new TVBox;

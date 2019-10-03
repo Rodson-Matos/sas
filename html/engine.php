@@ -54,10 +54,10 @@ class TApplication extends AdiantiCoreApplication
                      'NotificationList' => TRUE,
                      'SearchBox' => TRUE,
                      'SearchInputBox' => TRUE,
-                     'SystemPageService' => TRUE,
-                     'SystemPageBatchUpdate' => TRUE,
-                     'SystemPermissionUpdate' => TRUE,
-                     'SystemMenuUpdate' => TRUE);
+                     'BuilderPageService' => TRUE,
+                     'BuilderPageBatchUpdate' => TRUE,
+                     'BuilderPermissionUpdate' => TRUE,
+                     'BuilderMenuUpdate' => TRUE);
     } 
 }
 

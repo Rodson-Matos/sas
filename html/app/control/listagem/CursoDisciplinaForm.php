@@ -20,36 +20,36 @@ class CursoDisciplinaForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Disciplina ao Curso');
+        $this->form->setFormTitle("Disciplina ao Curso");
 
 
         $id = new TEntry('id');
         $curso_id = new TDBCombo('curso_id', 'sas', 'Curso', 'curso_id', '{nome_curso}','curso_id asc'  );
         $disciplina_id = new TDBCombo('disciplina_id', 'sas', 'Disciplina', 'disciplina_id', '{nome_disc}','disciplina_id asc'  );
 
-        $curso_id->addValidation('Curso id', new TRequiredValidator()); 
-        $disciplina_id->addValidation('Disciplina id', new TRequiredValidator()); 
+        $curso_id->addValidation("Curso id", new TRequiredValidator()); 
+        $disciplina_id->addValidation("Disciplina id", new TRequiredValidator()); 
 
         $id->setEditable(false);
         $id->setSize(100);
         $curso_id->setSize('70%');
         $disciplina_id->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$id]);
-        $row2 = $this->form->addFields([new TLabel('Curso:', '#ff0000', '14px', null)],[$curso_id]);
-        $row3 = $this->form->addFields([new TLabel('Disciplina:', '#ff0000', '14px', null)],[$disciplina_id]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$id]);
+        $row2 = $this->form->addFields([new TLabel("Curso:", '#ff0000', '14px', null)],[$curso_id]);
+        $row3 = $this->form->addFields([new TLabel("Disciplina:", '#ff0000', '14px', null)],[$disciplina_id]);
 
         // create the form actions
-        $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
+        $btn_onsave = $this->form->addAction("Salvar", new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
 
-        $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $btn_onclear = $this->form->addAction("Limpar formulário", new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
 
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->class = 'form-container';
-        $container->add(TBreadCrumb::create(['Listagem','Cadastro de Disciplinas do Curso']));
+        // $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $container->add($this->form);
 
         parent::add($container);

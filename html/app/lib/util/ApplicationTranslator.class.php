@@ -11,15 +11,17 @@
 class ApplicationTranslator
 {
     private static $instance; // singleton instance
-    private $messages;
-    private $enWords;
     private $lang;            // target language
+    private $messages;
+    private $sourceMessages;
     
     /**
      * Class Constructor
      */
     private function __construct()
     {
+        $this->messages = [];
+        $this->messages['en'] = [];
         $this->messages['en'][] = 'File not found';
         $this->messages['en'][] = 'Search';
         $this->messages['en'][] = 'Register';
@@ -272,7 +274,18 @@ class ApplicationTranslator
         $this->messages['en'][] = 'Status';
         $this->messages['en'][] = 'Update permissions?';
         $this->messages['en'][] = 'Changed';
-
+        $this->messages['en'][] = 'Add item above';
+        $this->messages['en'][] = 'Add item below';
+        $this->messages['en'][] = 'Add child item';
+        $this->messages['en'][] = 'Remove item';
+        $this->messages['en'][] = 'Move item';
+        $this->messages['en'][] = 'Menu editor';
+        $this->messages['en'][] = 'Order';
+        $this->messages['en'][] = 'Label';
+        $this->messages['en'][] = 'Color';
+        $this->messages['en'][] = 'Menu saved';
+        
+        $this->messages['pt'] = [];
         $this->messages['pt'][] = 'Arquivo não encontrado';
         $this->messages['pt'][] = 'Buscar';
         $this->messages['pt'][] = 'Cadastrar';
@@ -525,9 +538,18 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Status';
         $this->messages['pt'][] = 'Atualiza permissões?';
         $this->messages['pt'][] = 'Modificado';
+        $this->messages['pt'][] = 'Adiciona item acima';
+        $this->messages['pt'][] = 'Adiciona item abaixo';
+        $this->messages['pt'][] = 'Adiciona item filho';
+        $this->messages['pt'][] = 'Remover item';
+        $this->messages['pt'][] = 'Mover item';
+        $this->messages['pt'][] = 'Editor de menu';
+        $this->messages['pt'][] = 'Ordenação';
+        $this->messages['pt'][] = 'Rótulo';
+        $this->messages['pt'][] = 'Cor';
+        $this->messages['pt'][] = 'Menu salvo';
         
-        
-        
+        $this->messages['es'] = [];
         $this->messages['es'][] = 'Archivo no encontrado';
         $this->messages['es'][] = 'Buscar';
         $this->messages['es'][] = 'Registrar';
@@ -780,11 +802,22 @@ class ApplicationTranslator
         $this->messages['es'][] = 'Estado';
         $this->messages['es'][] = 'Actualizar permisos?';
         $this->messages['es'][] = 'Cambiado';
+        $this->messages['es'][] = 'Agregar elemento arriba';
+        $this->messages['es'][] = 'Agregar elemento abajo';
+        $this->messages['es'][] = 'Adiciona item hijo';
+        $this->messages['es'][] = 'Excluir item';
+        $this->messages['es'][] = 'Mover elemento';
+        $this->messages['es'][] = 'Editor de menú';
+        $this->messages['es'][] = 'Ordenación';
+        $this->messages['es'][] = 'Etiqueta';
+        $this->messages['es'][] = 'Color';
+        $this->messages['es'][] = 'Menú guardado';
         
-        $this->enWords = [];
-        foreach ($this->messages['en'] as $key => $value)
+
+        
+        foreach ($this->messages as $lang => $messages)
         {
-            $this->enWords[$value] = $key;
+            $this->sourceMessages[$lang] = array_flip( $this->messages[ $lang ] );
         }
     }
     
@@ -829,15 +862,15 @@ class ApplicationTranslator
      * @param $word     Word to be translated
      * @return          Translated word
      */
-    public static function translate($word, $param1 = NULL, $param2 = NULL, $param3 = NULL)
+    public static function translate($word, $source_language, $param1 = NULL, $param2 = NULL, $param3 = NULL)
     {
         // get the self unique instance
         $instance = self::getInstance();
         // search by the numeric index of the word
         
-        if (isset($instance->enWords[$word]) and !is_null($instance->enWords[$word]))
+        if (isset($instance->sourceMessages[$source_language][$word]) and !is_null($instance->sourceMessages[$source_language][$word]))
         {
-            $key = $instance->enWords[$word]; //$key = array_search($word, $instance->messages['en']);
+            $key = $instance->sourceMessages[$source_language][$word]; //$key = array_search($word, $instance->messages['en']);
             
             // get the target language
             $language = self::getLanguage();
@@ -869,8 +902,6 @@ class ApplicationTranslator
      */
     public static function translateTemplate($template)
     {
-        // get the self unique instance
-        $instance = self::getInstance();
         // search by translated words
         if(preg_match_all( '!_t\{(.*?)\}!i', $template, $match ) > 0)
         {
@@ -880,12 +911,24 @@ class ApplicationTranslator
                 $template = str_replace('_t{'.$word.'}', $translated, $template);
             }
         }
+        
+        if(preg_match_all( '!_tf\{(.*?),\s*(.*?)\}!i', $template, $matches ) > 0)
+        {
+            foreach($matches[0] as $key => $match)
+            {
+                $raw        = $matches[0][$key];
+                $word       = $matches[1][$key];
+                $from       = $matches[2][$key];
+                $translated = _tf($word, $from);
+                $template = str_replace($raw, $translated, $template);
+            }
+        }
         return $template;
     }
 }
 
 /**
- * Facade to translate words
+ * Facade to translate words from english
  * @param $word  Word to be translated
  * @param $param1 optional ^1
  * @param $param2 optional ^2
@@ -894,5 +937,19 @@ class ApplicationTranslator
  */
 function _t($msg, $param1 = null, $param2 = null, $param3 = null)
 {
-        return ApplicationTranslator::translate($msg, $param1, $param2, $param3);
+    return ApplicationTranslator::translate($msg, 'en', $param1, $param2, $param3);
+}
+
+/**
+ * Facade to translate words from specified language
+ * @param $word  Word to be translated
+ * @param $source_language  Source language
+ * @param $param1 optional ^1
+ * @param $param2 optional ^2
+ * @param $param3 optional ^3
+ * @return Translated word
+ */
+function _tf($msg, $source_language = 'en', $param1 = null, $param2 = null, $param3 = null)
+{
+    return ApplicationTranslator::translate($msg, $source_language, $param1, $param2, $param3);
 }

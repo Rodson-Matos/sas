@@ -6,6 +6,7 @@ class SalasList extends TPage
     private $datagrid; // listing
     private $pageNavigation;
     private $loaded;
+    private $filter_criteria;
     private static $database = 'sas';
     private static $activeRecord = 'Salas';
     private static $primaryKey = 'sala_id';
@@ -22,8 +23,7 @@ class SalasList extends TPage
         $this->form = new BootstrapFormBuilder(self::$formName);
 
         // define the form title
-        $this->form->setFormTitle('Listagem de Salas');
-
+        $this->form->setFormTitle("Listagem de Salas");
 
         $sala_id = new TEntry('sala_id');
         $numero_sala = new TEntry('numero_sala');
@@ -36,32 +36,33 @@ class SalasList extends TPage
         $numero_sala->setSize('70%');
         $capacidade_sala->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$sala_id]);
-        $row2 = $this->form->addFields([new TLabel('Número da sala:', null, '14px', null)],[$numero_sala]);
-        $row3 = $this->form->addFields([new TLabel('Capacidade da sala:', null, '14px', null)],[$capacidade_sala]);
-        $row4 = $this->form->addFields([new TLabel('Tipo de sala:', null, '14px', null)],[$tipo_sala]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$sala_id]);
+        $row2 = $this->form->addFields([new TLabel("Número da sala:", null, '14px', null)],[$numero_sala]);
+        $row3 = $this->form->addFields([new TLabel("Capacidade da sala:", null, '14px', null)],[$capacidade_sala]);
+        $row4 = $this->form->addFields([new TLabel("Tipo de sala:", null, '14px', null)],[$tipo_sala]);
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
-        $btn_onsearch = $this->form->addAction('Buscar', new TAction([$this, 'onSearch']), 'fa:search #ffffff');
+        $btn_onsearch = $this->form->addAction("Buscar", new TAction([$this, 'onSearch']), 'fa:search #ffffff');
         $btn_onsearch->addStyleClass('btn-primary'); 
 
-        $btn_onexportcsv = $this->form->addAction('Exportar como CSV', new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
+        $btn_onexportcsv = $this->form->addAction("Exportar como CSV", new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
 
-        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['SalasForm', 'onShow']), 'fa:plus #69aa46');
+        $btn_onshow = $this->form->addAction("Cadastrar", new TAction(['SalasForm', 'onShow']), 'fa:plus #69aa46');
 
         // creates a Datagrid
         $this->datagrid = new TDataGrid;
         $this->datagrid = new BootstrapDatagridWrapper($this->datagrid);
+        $this->filter_criteria = new TCriteria;
 
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
-        $column_sala_id = new TDataGridColumn('sala_id', 'Sala id', 'center' , '70px');
-        $column_numero_sala = new TDataGridColumn('numero_sala', 'Número da sala', 'left');
-        $column_capacidade_sala = new TDataGridColumn('capacidade_sala', 'Capacidade da sala', 'left');
-        $column_tipo_sala = new TDataGridColumn('tipo_sala', 'Tipo de sala', 'left');
+        $column_sala_id = new TDataGridColumn('sala_id', "Sala id", 'center' , '70px');
+        $column_numero_sala = new TDataGridColumn('numero_sala', "Número da sala", 'left');
+        $column_capacidade_sala = new TDataGridColumn('capacidade_sala', "Capacidade da sala", 'left');
+        $column_tipo_sala = new TDataGridColumn('tipo_sala', "Tipo de sala", 'left');
 
         $order_sala_id = new TAction(array($this, 'onReload'));
         $order_sala_id->setParameter('order', 'sala_id');
@@ -75,7 +76,7 @@ class SalasList extends TPage
         $action_onEdit = new TDataGridAction(array('SalasForm', 'onEdit'));
         $action_onEdit->setUseButton(false);
         $action_onEdit->setButtonClass('btn btn-default btn-sm');
-        $action_onEdit->setLabel('Editar');
+        $action_onEdit->setLabel("Editar");
         $action_onEdit->setImage('fa:pencil-square-o #478fca');
         $action_onEdit->setField(self::$primaryKey);
 
@@ -84,7 +85,7 @@ class SalasList extends TPage
         $action_onDelete = new TDataGridAction(array('SalasList', 'onDelete'));
         $action_onDelete->setUseButton(false);
         $action_onDelete->setButtonClass('btn btn-default btn-sm');
-        $action_onDelete->setLabel('Excluir');
+        $action_onDelete->setLabel("Excluir");
         $action_onDelete->setImage('fa:trash-o #dd5a43');
         $action_onDelete->setField(self::$primaryKey);
 
@@ -107,7 +108,7 @@ class SalasList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Listagem','Salas']));
+        $container->add(TBreadCrumb::create(["Listagem","Salas"]));
         $container->add($this->form);
         $container->add($panel);
 
@@ -282,8 +283,8 @@ class SalasList extends TPage
             // creates a repository for Salas
             $repository = new TRepository(self::$activeRecord);
             $limit = 20;
-            // creates a criteria
-            $criteria = new TCriteria;
+
+            $criteria = $this->filter_criteria;
 
             if (empty($param['order']))
             {

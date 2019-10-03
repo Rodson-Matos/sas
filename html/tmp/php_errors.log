@@ -1,0 +1,8 @@
+[02-Oct-2019 05:47:22 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to a member function toArray() on null in /var/www/html/sistema_de_alocacao_de_salas-27-09-2019-10-13-14/app/control/admin/SystemUserForm.php:348
+Stack trace:
+#0 [internal function]: SystemUserForm::onAddProgram(Array)
+#1 /var/www/html/sistema_de_alocacao_de_salas-27-09-2019-10-13-14/lib/adianti/core/AdiantiCoreApplication.php(51): call_user_func(Array, Array)
+#2 /var/www/html/sistema_de_alocacao_de_salas-27-09-2019-10-13-14/engine.php(23): Adianti\Core\AdiantiCoreApplication::run(true)
+#3 /var/www/html/sistema_de_alocacao_de_salas-27-09-2019-10-13-14/engine.php(64): TApplication::run(true)
+#4 {main}
+  thrown in /var/www/html/sistema_de_alocacao_de_salas-27-09-2019-10-13-14/app/control/admin/SystemUserForm.php on line 348

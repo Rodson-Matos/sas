@@ -6,6 +6,7 @@ class HorariosList extends TPage
     private $datagrid; // listing
     private $pageNavigation;
     private $loaded;
+    private $filter_criteria;
     private static $database = 'sas';
     private static $activeRecord = 'Horarios';
     private static $primaryKey = 'horarios_id';
@@ -22,8 +23,7 @@ class HorariosList extends TPage
         $this->form = new BootstrapFormBuilder(self::$formName);
 
         // define the form title
-        $this->form->setFormTitle('Listagem de Horários');
-
+        $this->form->setFormTitle("Listagem de Horários");
 
         $horarios_id = new TEntry('horarios_id');
         $horario = new TTime('horario');
@@ -34,30 +34,31 @@ class HorariosList extends TPage
         $horario->setSize(150);
         $horarios_id->setSize(100);
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$horarios_id]);
-        $row2 = $this->form->addFields([new TLabel('Horário:', null, '14px', null)],[$horario]);
-        $row3 = $this->form->addFields([new TLabel('Dia da semana:', null, '14px', null)],[$dia_sem]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$horarios_id]);
+        $row2 = $this->form->addFields([new TLabel("Horário:", null, '14px', null)],[$horario]);
+        $row3 = $this->form->addFields([new TLabel("Dia da semana:", null, '14px', null)],[$dia_sem]);
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
-        $btn_onsearch = $this->form->addAction('Buscar', new TAction([$this, 'onSearch']), 'fa:search #ffffff');
+        $btn_onsearch = $this->form->addAction("Buscar", new TAction([$this, 'onSearch']), 'fa:search #ffffff');
         $btn_onsearch->addStyleClass('btn-primary'); 
 
-        $btn_onexportcsv = $this->form->addAction('Exportar como CSV', new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
+        $btn_onexportcsv = $this->form->addAction("Exportar como CSV", new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
 
-        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['HorariosForm', 'onShow']), 'fa:plus #69aa46');
+        $btn_onshow = $this->form->addAction("Cadastrar", new TAction(['HorariosForm', 'onShow']), 'fa:plus #69aa46');
 
         // creates a Datagrid
         $this->datagrid = new TDataGrid;
         $this->datagrid = new BootstrapDatagridWrapper($this->datagrid);
+        $this->filter_criteria = new TCriteria;
 
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
-        $column_horarios_id = new TDataGridColumn('horarios_id', 'Horarios id', 'center' , '70px');
-        $column_horario = new TDataGridColumn('horario', 'Horário', 'left');
-        $column_dia_sem = new TDataGridColumn('dia_sem', 'Dia da semana', 'left');
+        $column_horarios_id = new TDataGridColumn('horarios_id', "Horarios id", 'center' , '70px');
+        $column_horario = new TDataGridColumn('horario', "Horário", 'left');
+        $column_dia_sem = new TDataGridColumn('dia_sem', "Dia da semana", 'left');
 
         $order_horarios_id = new TAction(array($this, 'onReload'));
         $order_horarios_id->setParameter('order', 'horarios_id');
@@ -70,7 +71,7 @@ class HorariosList extends TPage
         $action_onEdit = new TDataGridAction(array('HorariosForm', 'onEdit'));
         $action_onEdit->setUseButton(false);
         $action_onEdit->setButtonClass('btn btn-default btn-sm');
-        $action_onEdit->setLabel('Editar');
+        $action_onEdit->setLabel("Editar");
         $action_onEdit->setImage('fa:pencil-square-o #478fca');
         $action_onEdit->setField(self::$primaryKey);
 
@@ -79,7 +80,7 @@ class HorariosList extends TPage
         $action_onDelete = new TDataGridAction(array('HorariosList', 'onDelete'));
         $action_onDelete->setUseButton(false);
         $action_onDelete->setButtonClass('btn btn-default btn-sm');
-        $action_onDelete->setLabel('Excluir');
+        $action_onDelete->setLabel("Excluir");
         $action_onDelete->setImage('fa:trash-o #dd5a43');
         $action_onDelete->setField(self::$primaryKey);
 
@@ -102,7 +103,7 @@ class HorariosList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Listagem','Horarios']));
+        $container->add(TBreadCrumb::create(["Listagem","Horarios"]));
         $container->add($this->form);
         $container->add($panel);
 
@@ -271,8 +272,8 @@ class HorariosList extends TPage
             // creates a repository for Horarios
             $repository = new TRepository(self::$activeRecord);
             $limit = 20;
-            // creates a criteria
-            $criteria = new TCriteria;
+
+            $criteria = $this->filter_criteria;
 
             if (empty($param['order']))
             {

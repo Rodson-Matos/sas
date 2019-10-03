@@ -8,7 +8,7 @@ class ApplicationAuthenticationService
         $ini  = AdiantiApplicationConfig::get();
         
         TTransaction::open('permission');
-        $user = SystemUser::validate( $login );
+        $user = SystemUsers::validate( $login );
         
         if ($user)
         {
@@ -19,7 +19,7 @@ class ApplicationAuthenticationService
             }
             else
             {
-                SystemUser::authenticate( $login, $password );
+                SystemUsers::authenticate( $login, $password );
             }
             
             $programs = $user->getPrograms();

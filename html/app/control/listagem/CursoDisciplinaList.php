@@ -6,6 +6,7 @@ class CursoDisciplinaList extends TPage
     private $datagrid; // listing
     private $pageNavigation;
     private $loaded;
+    private $filter_criteria;
     private static $database = 'sas';
     private static $activeRecord = 'CursoDisciplina';
     private static $primaryKey = 'id';
@@ -22,8 +23,7 @@ class CursoDisciplinaList extends TPage
         $this->form = new BootstrapFormBuilder(self::$formName);
 
         // define the form title
-        $this->form->setFormTitle('Disciplinas do Curso');
-
+        $this->form->setFormTitle("Disciplinas do Curso");
 
         $id = new TEntry('id');
         $curso_id = new TDBCombo('curso_id', 'sas', 'Curso', 'curso_id', '{nome_curso}','curso_id asc'  );
@@ -33,30 +33,31 @@ class CursoDisciplinaList extends TPage
         $curso_id->setSize('70%');
         $disciplina_id->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$id]);
-        $row2 = $this->form->addFields([new TLabel('Curso:', null, '14px', null)],[$curso_id]);
-        $row3 = $this->form->addFields([new TLabel('Disciplina:', null, '14px', null)],[$disciplina_id]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$id]);
+        $row2 = $this->form->addFields([new TLabel("Curso:", null, '14px', null)],[$curso_id]);
+        $row3 = $this->form->addFields([new TLabel("Disciplina:", null, '14px', null)],[$disciplina_id]);
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
-        $btn_onsearch = $this->form->addAction('Buscar', new TAction([$this, 'onSearch']), 'fa:search #ffffff');
+        $btn_onsearch = $this->form->addAction("Buscar", new TAction([$this, 'onSearch']), 'fa:search #ffffff');
         $btn_onsearch->addStyleClass('btn-primary'); 
 
-        $btn_onexportcsv = $this->form->addAction('Exportar como CSV', new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
+        $btn_onexportcsv = $this->form->addAction("Exportar como CSV", new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
 
-        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['CursoDisciplinaForm', 'onShow']), 'fa:plus #69aa46');
+        $btn_onshow = $this->form->addAction("Cadastrar", new TAction(['CursoDisciplinaForm', 'onShow']), 'fa:plus #69aa46');
 
         // creates a Datagrid
         $this->datagrid = new TDataGrid;
         $this->datagrid = new BootstrapDatagridWrapper($this->datagrid);
+        $this->filter_criteria = new TCriteria;
 
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
-        $column_id = new TDataGridColumn('id', 'Id', 'center' , '70px');
-        $column_curso_id = new TDataGridColumn('curso_id', 'Curso id', 'left');
-        $column_disciplina_id = new TDataGridColumn('disciplina_id', 'Disciplina id', 'left');
+        $column_id = new TDataGridColumn('id', "Id", 'center' , '70px');
+        $column_curso_id = new TDataGridColumn('curso_id', "Curso id", 'left');
+        $column_disciplina_id = new TDataGridColumn('disciplina_id', "Disciplina id", 'left');
 
         $order_id = new TAction(array($this, 'onReload'));
         $order_id->setParameter('order', 'id');
@@ -69,7 +70,7 @@ class CursoDisciplinaList extends TPage
         $action_onEdit = new TDataGridAction(array('CursoDisciplinaForm', 'onEdit'));
         $action_onEdit->setUseButton(false);
         $action_onEdit->setButtonClass('btn btn-default btn-sm');
-        $action_onEdit->setLabel('Editar');
+        $action_onEdit->setLabel("Editar");
         $action_onEdit->setImage('fa:pencil-square-o #478fca');
         $action_onEdit->setField(self::$primaryKey);
 
@@ -78,7 +79,7 @@ class CursoDisciplinaList extends TPage
         $action_onDelete = new TDataGridAction(array('CursoDisciplinaList', 'onDelete'));
         $action_onDelete->setUseButton(false);
         $action_onDelete->setButtonClass('btn btn-default btn-sm');
-        $action_onDelete->setLabel('Excluir');
+        $action_onDelete->setLabel("Excluir");
         $action_onDelete->setImage('fa:trash-o #dd5a43');
         $action_onDelete->setField(self::$primaryKey);
 
@@ -101,7 +102,7 @@ class CursoDisciplinaList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Listagem','Disciplinas do curso']));
+        $container->add(TBreadCrumb::create(["Listagem","Disciplinas do curso"]));
         $container->add($this->form);
         $container->add($panel);
 
@@ -270,8 +271,8 @@ class CursoDisciplinaList extends TPage
             // creates a repository for CursoDisciplina
             $repository = new TRepository(self::$activeRecord);
             $limit = 20;
-            // creates a criteria
-            $criteria = new TCriteria;
+
+            $criteria = $this->filter_criteria;
 
             if (empty($param['order']))
             {

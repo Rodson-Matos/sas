@@ -38,7 +38,7 @@ class MessageList extends TElement
                 TTransaction::open('permission');
                 foreach ($system_messages as $system_message)
                 {
-                    $name    = SystemUser::find($system_message->system_user_id)->name;
+                    $name    = SystemUsers::find($system_message->system_user_id)->name;
                     $date    = $this->getShortPastTime($system_message->dt_message);
                     $subject = $system_message->subject;
                     
@@ -108,7 +108,7 @@ class MessageList extends TElement
                 TTransaction::open('permission');
                 foreach ($system_messages as $system_message)
                 {
-                    $name    = SystemUser::find($system_message->system_user_id)->name;
+                    $name    = SystemUsers::find($system_message->system_user_id)->name;
                     $date    = $this->getShortPastTime($system_message->dt_message);
                     $subject = $system_message->subject;
                     
@@ -165,7 +165,7 @@ class MessageList extends TElement
                 TTransaction::open('permission');
                 foreach ($system_messages as $system_message)
                 {
-                    $name    = SystemUser::find($system_message->system_user_id)->name;
+                    $name    = SystemUsers::find($system_message->system_user_id)->name;
                     $date    = $this->getShortPastTime($system_message->dt_message);
                     $subject = $system_message->subject;
                     

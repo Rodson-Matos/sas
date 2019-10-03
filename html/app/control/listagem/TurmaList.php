@@ -6,6 +6,7 @@ class TurmaList extends TPage
     private $datagrid; // listing
     private $pageNavigation;
     private $loaded;
+    private $filter_criteria;
     private static $database = 'sas';
     private static $activeRecord = 'Turma';
     private static $primaryKey = 'turma_id';
@@ -22,8 +23,7 @@ class TurmaList extends TPage
         $this->form = new BootstrapFormBuilder(self::$formName);
 
         // define the form title
-        $this->form->setFormTitle('Listagem de Turmas');
-
+        $this->form->setFormTitle("Listagem de Turmas");
 
         $turma_id = new TEntry('turma_id');
         $n_alunos = new TEntry('n_alunos');
@@ -35,32 +35,33 @@ class TurmaList extends TPage
         $curso_id->setSize('70%');
         $tipo_turma->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$turma_id]);
-        $row2 = $this->form->addFields([new TLabel('Número de alunos:', null, '14px', null)],[$n_alunos]);
-        $row3 = $this->form->addFields([new TLabel('Tipo da turma:', null, '14px', null)],[$tipo_turma]);
-        $row4 = $this->form->addFields([new TLabel('Curso:', null, '14px', null)],[$curso_id]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$turma_id]);
+        $row2 = $this->form->addFields([new TLabel("Número de alunos:", null, '14px', null)],[$n_alunos]);
+        $row3 = $this->form->addFields([new TLabel("Tipo da turma:", null, '14px', null)],[$tipo_turma]);
+        $row4 = $this->form->addFields([new TLabel("Curso:", null, '14px', null)],[$curso_id]);
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
-        $btn_onsearch = $this->form->addAction('Buscar', new TAction([$this, 'onSearch']), 'fa:search #ffffff');
+        $btn_onsearch = $this->form->addAction("Buscar", new TAction([$this, 'onSearch']), 'fa:search #ffffff');
         $btn_onsearch->addStyleClass('btn-primary'); 
 
-        $btn_onexportcsv = $this->form->addAction('Exportar como CSV', new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
+        $btn_onexportcsv = $this->form->addAction("Exportar como CSV", new TAction([$this, 'onExportCsv']), 'fa:file-text-o #000000');
 
-        $btn_onshow = $this->form->addAction('Cadastrar', new TAction(['TurmaForm', 'onShow']), 'fa:plus #69aa46');
+        $btn_onshow = $this->form->addAction("Cadastrar", new TAction(['TurmaForm', 'onShow']), 'fa:plus #69aa46');
 
         // creates a Datagrid
         $this->datagrid = new TDataGrid;
         $this->datagrid = new BootstrapDatagridWrapper($this->datagrid);
+        $this->filter_criteria = new TCriteria;
 
         $this->datagrid->style = 'width: 100%';
         $this->datagrid->setHeight(320);
 
-        $column_turma_id = new TDataGridColumn('turma_id', 'Turma id', 'center' , '70px');
-        $column_tipo_turma = new TDataGridColumn('tipo_turma', 'Tipo da turma', 'left');
-        $column_n_alunos = new TDataGridColumn('n_alunos', 'Número de alunos', 'left');
-        $column_curso_id = new TDataGridColumn('curso_id', 'Curso id', 'left');
+        $column_turma_id = new TDataGridColumn('turma_id', "Turma id", 'center' , '70px');
+        $column_tipo_turma = new TDataGridColumn('tipo_turma', "Tipo da turma", 'left');
+        $column_n_alunos = new TDataGridColumn('n_alunos', "Número de alunos", 'left');
+        $column_curso_id = new TDataGridColumn('curso_id', "Curso id", 'left');
 
         $order_turma_id = new TAction(array($this, 'onReload'));
         $order_turma_id->setParameter('order', 'turma_id');
@@ -74,7 +75,7 @@ class TurmaList extends TPage
         $action_onEdit = new TDataGridAction(array('TurmaForm', 'onEdit'));
         $action_onEdit->setUseButton(false);
         $action_onEdit->setButtonClass('btn btn-default btn-sm');
-        $action_onEdit->setLabel('Editar');
+        $action_onEdit->setLabel("Editar");
         $action_onEdit->setImage('fa:pencil-square-o #478fca');
         $action_onEdit->setField(self::$primaryKey);
 
@@ -83,7 +84,7 @@ class TurmaList extends TPage
         $action_onDelete = new TDataGridAction(array('TurmaList', 'onDelete'));
         $action_onDelete->setUseButton(false);
         $action_onDelete->setButtonClass('btn btn-default btn-sm');
-        $action_onDelete->setLabel('Excluir');
+        $action_onDelete->setLabel("Excluir");
         $action_onDelete->setImage('fa:trash-o #dd5a43');
         $action_onDelete->setField(self::$primaryKey);
 
@@ -106,7 +107,7 @@ class TurmaList extends TPage
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
-        $container->add(TBreadCrumb::create(['Listagem','Turmas']));
+        $container->add(TBreadCrumb::create(["Listagem","Turmas"]));
         $container->add($this->form);
         $container->add($panel);
 
@@ -281,8 +282,8 @@ class TurmaList extends TPage
             // creates a repository for Turma
             $repository = new TRepository(self::$activeRecord);
             $limit = 20;
-            // creates a criteria
-            $criteria = new TCriteria;
+
+            $criteria = $this->filter_criteria;
 
             if (empty($param['order']))
             {

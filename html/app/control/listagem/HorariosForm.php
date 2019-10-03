@@ -20,14 +20,14 @@ class HorariosForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Cadastro de Horários');
+        $this->form->setFormTitle("Cadastro de Horários");
 
 
         $horarios_id = new TEntry('horarios_id');
         $horario = new TTime('horario');
         $dia_sem = new TCombo('dia_sem');
 
-        $horario->addValidation('Horário', new TRequiredValidator()); 
+        $horario->addValidation("Horário", new TRequiredValidator()); 
 
         $dia_sem->addItems(['SEG'=>'SEGUNDA-FEIRA','TER'=>'TERÇA-FEIRA','QUA'=>'QUARTA-FEIRA','QUI'=>'QUINTA-FEIRA','SEX'=>'SEXTA-FEIRA','SAB'=>'SÁBADO']);
         $horarios_id->setEditable(false);
@@ -36,15 +36,15 @@ class HorariosForm extends TPage
         $horario->setSize(150);
         $horarios_id->setSize(100);
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$horarios_id]);
-        $row2 = $this->form->addFields([new TLabel('Horário:', '#ff0000', '14px', null)],[$horario]);
-        $row3 = $this->form->addFields([new TLabel('Dia da semana:', null, '14px', null)],[$dia_sem]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$horarios_id]);
+        $row2 = $this->form->addFields([new TLabel("Horário:", '#ff0000', '14px', null)],[$horario]);
+        $row3 = $this->form->addFields([new TLabel("Dia da semana:", null, '14px', null)],[$dia_sem]);
 
         // create the form actions
-        $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
+        $btn_onsave = $this->form->addAction("Salvar", new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
 
-        $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $btn_onclear = $this->form->addAction("Limpar formulário", new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
 
         // vertical box container
         $container = new TVBox;

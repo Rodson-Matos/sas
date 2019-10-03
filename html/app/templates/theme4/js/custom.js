@@ -170,4 +170,17 @@ function tdatetime_start( id, mask, language, size, options) {
     {
         $( id ).closest('.tdate-group').width(size);
     }
+    
+    switch (language){
+		case 'es':
+			atributes.cancelText = 'Cancelar';
+			atributes.okText = 'Listo';
+			atributes.clearText = 'Limpiar';
+			break;
+		case 'pt':
+			atributes.cancelText = 'Cancelar';
+			atributes.okText = 'Ok';
+			atributes.clearText = 'Limpar';
+			break;
+    }
 }

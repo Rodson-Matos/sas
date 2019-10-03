@@ -20,30 +20,30 @@ class CursoHorarioForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Cadastro de curso horario');
+        $this->form->setFormTitle("Cadastro de curso horario");
 
 
         $id = new TEntry('id');
         $horarios_id = new TDBCombo('horarios_id', 'sas', 'Horarios', 'horarios_id', '{horario}','horarios_id asc'  );
         $curso_id = new TDBCombo('curso_id', 'sas', 'Curso', 'curso_id', '{nome_curso}','curso_id asc'  );
 
-        $horarios_id->addValidation('Horarios id', new TRequiredValidator()); 
-        $curso_id->addValidation('Curso id', new TRequiredValidator()); 
+        $horarios_id->addValidation("Horarios id", new TRequiredValidator()); 
+        $curso_id->addValidation("Curso id", new TRequiredValidator()); 
 
         $id->setEditable(false);
         $id->setSize(100);
         $curso_id->setSize('70%');
         $horarios_id->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$id]);
-        $row2 = $this->form->addFields([new TLabel('Horarios:', '#ff0000', '14px', null)],[$horarios_id]);
-        $row3 = $this->form->addFields([new TLabel('Curso:', '#ff0000', '14px', null)],[$curso_id]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$id]);
+        $row2 = $this->form->addFields([new TLabel("Horarios:", '#ff0000', '14px', null)],[$horarios_id]);
+        $row3 = $this->form->addFields([new TLabel("Curso:", '#ff0000', '14px', null)],[$curso_id]);
 
         // create the form actions
-        $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
+        $btn_onsave = $this->form->addAction("Salvar", new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
 
-        $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $btn_onclear = $this->form->addAction("Limpar formulário", new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
 
         // vertical box container
         $container = new TVBox;

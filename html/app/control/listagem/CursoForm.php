@@ -20,7 +20,7 @@ class CursoForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Cadastro de curso');
+        $this->form->setFormTitle("Cadastro de curso");
 
 
         $curso_id = new TEntry('curso_id');
@@ -29,10 +29,10 @@ class CursoForm extends TPage
         $modalidade = new TCombo('modalidade');
         $turno_curso = new TCombo('turno_curso');
 
-        $nome_curso->addValidation('Nome do curso', new TRequiredValidator()); 
-        $tipo_curso->addValidation('Tipo do curso', new TRequiredValidator()); 
-        $modalidade->addValidation('Modalidade', new TRequiredValidator()); 
-        $turno_curso->addValidation('Turno do curso', new TRequiredValidator()); 
+        $nome_curso->addValidation("Nome do curso", new TRequiredValidator()); 
+        $tipo_curso->addValidation("Tipo do curso", new TRequiredValidator()); 
+        $modalidade->addValidation("Modalidade", new TRequiredValidator()); 
+        $turno_curso->addValidation("Turno do curso", new TRequiredValidator()); 
 
         $curso_id->setEditable(false);
 
@@ -46,17 +46,17 @@ class CursoForm extends TPage
         $modalidade->setSize('70%');
         $turno_curso->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('Curso id:', null, '14px', null)],[$curso_id]);
-        $row2 = $this->form->addFields([new TLabel('Nome do curso:', '#ff0000', '14px', null)],[$nome_curso]);
-        $row3 = $this->form->addFields([new TLabel('Tipo do curso:', '#ff0000', '14px', null)],[$tipo_curso]);
-        $row4 = $this->form->addFields([new TLabel('Modalidade:', '#ff0000', '14px', null)],[$modalidade]);
-        $row5 = $this->form->addFields([new TLabel('Turno do curso:', '#ff0000', '14px', null)],[$turno_curso]);
+        $row1 = $this->form->addFields([new TLabel("Curso id:", null, '14px', null)],[$curso_id]);
+        $row2 = $this->form->addFields([new TLabel("Nome do curso:", '#ff0000', '14px', null)],[$nome_curso]);
+        $row3 = $this->form->addFields([new TLabel("Tipo do curso:", '#ff0000', '14px', null)],[$tipo_curso]);
+        $row4 = $this->form->addFields([new TLabel("Modalidade:", '#ff0000', '14px', null)],[$modalidade]);
+        $row5 = $this->form->addFields([new TLabel("Turno do curso:", '#ff0000', '14px', null)],[$turno_curso]);
 
         // create the form actions
-        $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
+        $btn_onsave = $this->form->addAction("Salvar", new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
 
-        $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $btn_onclear = $this->form->addAction("Limpar formulário", new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
 
         // vertical box container
         $container = new TVBox;

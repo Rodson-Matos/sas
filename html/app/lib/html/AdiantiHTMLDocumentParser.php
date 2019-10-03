@@ -249,7 +249,18 @@ class AdiantiHTMLDocumentParser
      */
     public function addPageBreak()
     {
-        $this->content .= "\n" . '<div style="page-break-before: always"></div>' . "\n";
+        $dom = pQuery::parseStr($this->content);
+        $body = $dom->query('body');
+
+        if($body->count() > 0)
+        {
+            $body->append("\n" . '<div style="page-break-before: always"></div>' . "\n");
+            $this->content = $dom->html();
+        }
+        else 
+        {
+            $this->content .= "\n" . '<div style="page-break-before: always"></div>' . "\n";
+        }
     }
     
     /**
@@ -345,7 +356,12 @@ class AdiantiHTMLDocumentParser
         $options = new Options();
         $options->set('dpi', '128');
         $options->setIsRemoteEnabled(true);
-
+        
+        if(preg_match("/<!DOCTYPE html>/i", $html))
+        {
+            $options->set('enable_html5_parser', true);    
+        }
+        
         // instantiate and use the dompdf class
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);

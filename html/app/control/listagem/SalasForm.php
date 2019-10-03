@@ -20,7 +20,7 @@ class SalasForm extends TPage
         // creates the form
         $this->form = new BootstrapFormBuilder(self::$formName);
         // define the form title
-        $this->form->setFormTitle('Cadastro de salas');
+        $this->form->setFormTitle("Cadastro de salas");
 
 
         $sala_id = new TEntry('sala_id');
@@ -28,8 +28,8 @@ class SalasForm extends TPage
         $capacidade_sala = new TEntry('capacidade_sala');
         $tipo_sala = new TCombo('tipo_sala');
 
-        $numero_sala->addValidation('Número da sala', new TRequiredValidator()); 
-        $capacidade_sala->addValidation('Capacidade da sala', new TRequiredValidator()); 
+        $numero_sala->addValidation("Número da sala", new TRequiredValidator()); 
+        $capacidade_sala->addValidation("Capacidade da sala", new TRequiredValidator()); 
 
         $tipo_sala->addItems(['SALA'=>'SALA','LAB'=>'LABORATÓRIO','DES'=>'DESENHO']);
         $sala_id->setEditable(false);
@@ -39,16 +39,16 @@ class SalasForm extends TPage
         $numero_sala->setSize('70%');
         $capacidade_sala->setSize('70%');
 
-        $row1 = $this->form->addFields([new TLabel('ID:', null, '14px', null)],[$sala_id]);
-        $row2 = $this->form->addFields([new TLabel('Número da sala:', '#ff0000', '14px', null)],[$numero_sala]);
-        $row3 = $this->form->addFields([new TLabel('Capacidade da sala:', '#ff0000', '14px', null)],[$capacidade_sala]);
-        $row4 = $this->form->addFields([new TLabel('Tipo de sala:', null, '14px', null)],[$tipo_sala]);
+        $row1 = $this->form->addFields([new TLabel("ID:", null, '14px', null)],[$sala_id]);
+        $row2 = $this->form->addFields([new TLabel("Número da sala:", '#ff0000', '14px', null)],[$numero_sala]);
+        $row3 = $this->form->addFields([new TLabel("Capacidade da sala:", '#ff0000', '14px', null)],[$capacidade_sala]);
+        $row4 = $this->form->addFields([new TLabel("Tipo de sala:", null, '14px', null)],[$tipo_sala]);
 
         // create the form actions
-        $btn_onsave = $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
+        $btn_onsave = $this->form->addAction("Salvar", new TAction([$this, 'onSave']), 'fa:floppy-o #ffffff');
         $btn_onsave->addStyleClass('btn-primary'); 
 
-        $btn_onclear = $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
+        $btn_onclear = $this->form->addAction("Limpar formulário", new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
 
         // vertical box container
         $container = new TVBox;

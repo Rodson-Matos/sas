@@ -744,3 +744,66 @@ div > div.panel > .panel-body {
     display: block;
     clear: both;
 }
+.panel{
+    border-color: #ddd !important;
+}
+.panel-default[widget='bootstrapformbuilder'] > .panel-heading, #chart-box > .panel-heading{
+    background-color: #25292b !important;
+color: #fff !important;
+    border-top: 2px solid #25292b;
+}
+#login-wrapper .panel-default > .panel-heading {
+    background-color: #4CAF50 !important;
+color:white !important;   
+    border-top: 2px solid #4CAF50;
+}
+.panel-default[widget='bootstrapformbuilder'] .panel-title, #chart-box > .panel-heading{
+    font-weight: 600;
+}
+
+.ui-dialog .window_modal
+{
+    padding:0.2px;
+}
+.ui-dialog .window_modal .panel
+{
+    margin-bottom:0;
+    border-top:0;
+    border-radius:0;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;;
+    -moz-box-shadow: none !important;;
+    border: 0px !important;
+}
+.ui-dialog .window_modal .panel-body{
+  padding: 0px !important;
+  padding-top: 8px !important;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+.ui-dialog .window_modal div[widget="bootstrapformbuilder"] > .panel-heading{
+   display: none;
+}
+
+.formView-detail table{
+    margin-bottom: 0px;
+}
+.formView-detail .panel-body{
+    padding: 0px;
+}
+#div_breadcrumbs{
+    background-color: #fff;
+    margin-bottom: 15px;
+}
+.panel-body .tformrow{
+    min-height: 35px;
+}
+.fb-field-container{
+    padding-left: 8px;
+    padding-right: 8px;
+    min-height: 35px;
+}
+.fb-field-container.control-label{
+    padding-top:4px;
+}

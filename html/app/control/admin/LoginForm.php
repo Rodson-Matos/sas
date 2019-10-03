@@ -26,7 +26,7 @@ class LoginForm extends TPage
         $this->style = 'clear:both';
         // creates the form
         $this->form = new BootstrapFormBuilder('form_login');
-        $this->form->setFormTitle( '{login_form_title}' );
+        $this->form->setFormTitle( 'Login' );
         
         // create the form fields
         $login = new TEntry('login');
@@ -60,8 +60,8 @@ class LoginForm extends TPage
             $login->setExitAction(new TAction( [$this, 'onExitUser'] ) );
         }
         
-        $btn = $this->form->addAction('{login_button_text}', new TAction(array($this, 'onLogin')), '');
-        $btn->class = 'btn {login_button_color}';
+        $btn = $this->form->addAction('ENTRAR', new TAction(array($this, 'onLogin')), '');
+        $btn->class = 'btn bg-green';
         $btn->style = 'height: 40px;width: 90%;display: block;margin: auto;font-size:17px;';
         
         $wrapper = new TElement('div');
@@ -70,7 +70,7 @@ class LoginForm extends TPage
         
         $h3 = new TElement('h1');
         $h3->style = 'text-align:center;';
-        $h3->add('{login_title}');
+        $h3->add('Sistema de Alocação de Salas');
         
         $wrapper->add($h3);
         $wrapper->add($this->form);
